@@ -8,7 +8,7 @@
 #define ADS_CHANNEL 1
 #define SCL_PIN     12
 #define SDA_PIN     13
-long maxAdc = 21000;
+long maxAdc = 14000;
 const int MAPPED_MAX = 127;
 
 Adafruit_ADS1115 ads;
@@ -35,7 +35,8 @@ void handleSerialProtocol();
 void setup() {
   TinyUSBDevice.setManufacturerDescriptor("BarryAllen");
   TinyUSBDevice.setProductDescriptor("BarrysBreathController");
-  pinMode(8, OUTPUT);
+  pinMode(48, OUTPUT);
+  digitalWrite(48, LOW);     // 关闭 GPIO48 的灯
 
   WiFi.mode(WIFI_OFF);
   btStop();
@@ -55,7 +56,6 @@ void setup() {
 
 void loop() {
   handleSerialProtocol();
-  digitalWrite(8, LOW);
   static long zeroSum = 0;
   static int zeroCount = 0;
   int16_t raw = ads.readADC_SingleEnded(ADS_CHANNEL);
